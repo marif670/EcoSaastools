@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Module 4 — WordPress Practical — Ultra-Deep Workbook (Mermaid CDN)</title>
+
+<!-- THEME STYLES (standalone) -->
+<style>
+  :root{
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#2b6cb0;
+    --accent-2:#c43a31;
+    --soft:#e8eef6;
+    --radius:12px;
+    --shadow: 0 6px 18px rgba(32,41,61,0.08);
+    --mono: ui-monospace, SFMono-Regular, "Roboto Mono", "Courier New", monospace;
+    --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --maxwidth:1200px;
+  }
+  html,body{height:100%}
+  body{
+    margin:0;font-family:var(--ui);background:linear-gradient(180deg,var(--bg),#eef4fb 120px);
+    color:#0f172a;-webkit-font-smoothing:antialiased;line-height:1.55;
+  }
+  .app{display:flex;min-height:100vh;max-width:1600px;margin:18px auto;padding:20px;gap:20px;width:calc(100% - 40px);box-sizing:border-box;}
+  .sidebar{width:320px;background:linear-gradient(180deg,var(--card),#fbfdff);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);position:sticky;top:20px;height:calc(100vh - 40px);overflow:auto;border:1px solid rgba(45,55,72,0.04)}
+  .brand{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+  .logo{width:44px;height:44px;border-radius:10px;display:inline-grid;place-items:center;background:linear-gradient(135deg,var(--accent),#3aa0d6);color:white;font-weight:700;font-size:18px;box-shadow:0 4px 12px rgba(43,108,176,0.18)}
+  .brand h1{font-size:16px;margin:0}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+  .nav{margin-top:12px}
+  .nav h3{margin:12px 0 6px 0;font-size:13px;color:var(--muted);letter-spacing:0.6px}
+  .nav a{display:block;padding:10px;border-radius:10px;color:#0b1220;text-decoration:none;font-size:14px;margin-bottom:6px}
+  .nav a:hover{background:var(--soft)}
+  .sub{padding-left:12px;font-size:13px;color:var(--muted);display:block}
+  .content{flex:1;max-width:calc(var(--maxwidth) - 380px)}
+  main{background:transparent}
+  section.card{background:var(--card);border-radius:var(--radius);padding:22px;margin-bottom:18px;box-shadow:var(--shadow);border:1px solid rgba(40,56,78,0.03)}
+  section.card h2{margin-top:0;color:var(--accent);display:flex;align-items:center;gap:10px}
+  .callout{border-left:4px solid var(--accent);background:linear-gradient(90deg,#fff,#fbfdff);padding:12px 14px;border-radius:8px;margin:12px 0;color:#12345a}
+  .note{border-left:4px solid #f59e0b;background:#fffaf0;padding:12px;border-radius:8px;margin:12px 0;color:#7a4a00}
+  .danger{border-left:4px solid #e11d48;background:#fff0f6;padding:12px;border-radius:8px;margin:12px 0;color:#7a1730}
+  pre.code{background:#0b1220;color:#e6eef8;padding:12px;border-radius:8px;overflow:auto;font-family:var(--mono);font-size:13px}
+  .cols{display:grid;grid-template-columns:1fr 320px;gap:16px}
+  .aside{background:linear-gradient(180deg,#ffffff,#fbfdff);border-radius:10px;padding:12px;border:1px solid rgba(20,30,48,0.03)}
+  .quiz{margin-top:12px}
+  .quiz button{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+  .quiz .result{margin-top:8px;font-weight:600}
+  .checklist{list-style:none;padding-left:0;margin:8px 0}
+  .checklist li{padding:8px 10px;border-radius:8px;background:var(--soft);margin-bottom:8px;font-size:14px}
+  @media (max-width:980px){
+    .app{padding:14px}
+    .sidebar{position:fixed;left:0;top:0;height:100vh;z-index:60;transform:translateX(-110%);transition:transform .28s ease;width:78%;max-width:360px}
+    .sidebar.open{transform:translateX(0)}
+    .mobile-bar{display:flex;align-items:center;gap:8px;position:fixed;left:12px;top:12px;z-index:80}
+    .mobile-bar button{background:var(--card);padding:10px;border-radius:10px;border:1px solid rgba(16,24,40,0.06);box-shadow:var(--shadow)}
+    .content{margin-left:0}
+    .cols{grid-template-columns:1fr}
+  }
+  .muted{color:var(--muted)}
+  .kbd{background:#0b1220;color:#fff;padding:4px 8px;border-radius:6px;font-family:var(--mono);font-size:12px}
+  .pill{display:inline-block;padding:6px 8px;border-radius:999px;background:var(--soft);font-size:13px;margin-right:6px}
+  .summary{border:1px dashed rgba(43,108,176,0.14);padding:12px;border-radius:8px;background:linear-gradient(180deg,#fbfeff,#ffffff)}
+  .mistake{border-left:4px solid #f97316;background:#fff7ed;padding:10px;border-radius:8px}
+  .exercise{border-left:4px solid #10b981;background:#f0fff9;padding:10px;border-radius:8px}
+  html{scroll-behavior:smooth}
+  .mermaid{background:transparent;margin:12px 0;padding:6px;border-radius:6px}
+  footer{color:var(--muted)}
+</style>
+
+<!-- MERMAID CDN (online) -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true, securityLevel:"loose"});</script>
+</head>
+<body>
+<div class="mobile-bar" aria-hidden="false">
+  <button id="openSidebar" title="Open navigation">☰ Menu</button>
+  <div style="background:var(--card);padding:10px;border-radius:10px;box-shadow:var(--shadow);">Module 4 — WordPress Practical</div>
+</div>
+
+<div class="app" role="application" aria-labelledby="workbookTitle">
+  <aside class="sidebar" id="sidebar" aria-label="Workbook navigation">
+    <div class="brand">
+      <div class="logo">WP</div>
+      <div>
+        <h1 id="workbookTitle">Module 4 — WordPress Practical</h1>
+        <p>Ultra-deep workbook • Mermaid diagrams (CDN)</p>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Primary">
+      <h3>Sections</h3>
+      <a href="#sec1">1. Introduction to WordPress</a><div class="sub">Why WP is #1 • WP.org vs WP.com • Use cases</div>
+      <a href="#sec2">2. Understanding the WordPress Ecosystem</a><div class="sub">Core • Themes • Plugins • Community</div>
+      <a href="#sec3">3. WordPress Installation Methods</a><div class="sub">Localhost • One-click • Manual</div>
+      <a href="#sec4">4. Security During Installation</a><div class="sub">Usernames • Prefix • SSL</div>
+      <a href="#sec5">5. First Login & Dashboard Tour</a><div class="sub">Admin panel • Posts vs Pages</div>
+      <a href="#sec6">6. Media Management</a><div class="sub">Formats • Optimization • Library</div>
+      <a href="#sec7">7. Menus & Navigation</a><div class="sub">Create menus • Hierarchies • Responsive</div>
+      <a href="#sec8">8. Widgets & Gutenberg Blocks</a><div class="sub">Blocks • Reusable • Layout</div>
+      <a href="#sec9">9. User Roles & Permissions</a><div class="sub">Admin • Editor • Author • Contributor • Subscriber</div>
+      <a href="#sec10">10. Themes: Basics</a><div class="sub">Install • Activate • Delete</div>
+      <a href="#sec11">11. Themes: Advanced</a><div class="sub">Premium • Child themes • Customizer</div>
+      <a href="#sec12">12. Plugins: Basics</a><div class="sub">Install safely</div>
+      <a href="#sec13">13. Plugins: Must-Have Set</a><div class="sub">SEO • Security • Backups • Cache • Forms</div>
+      <a href="#sec14">14. Site Security Best Practices</a><div class="sub">SSL • 2FA • Updates</div>
+      <a href="#sec15">15. Backups & Restore Plans</a><div class="sub">Auto backups • Cloud • Test</div>
+      <a href="#sec16">16. Performance & Optimization</a><div class="sub">CWV • Caching • Images • DB</div>
+      <a href="#sec17">17. Hands-On Practical Exercises</a><div class="sub">Install, post, plugins, theme, menus</div>
+      <a href="#sec18">18. Beginner Checklist & Next Steps</a><div class="sub">Checklist • Mistakes • Projects</div>
+      <h3 style="margin-top:14px">Quick tools</h3>
+      <a href="#exercises">All Exercises</a>
+      <a href="#quizzes">All Quizzes</a>
+    </nav>
+
+    <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+      <div class="pill">Duration: 6–12 hours</div>
+      <div class="pill">Skill: Beginner → Intermediate</div>
+    </div>
+  </aside>
+
+  <div class="content">
+    <main>
+
+      <!-- SECTION 1 -->
+      <section id="sec1" class="card" tabindex="0" aria-labelledby="s1title">
+        <h2 id="s1title">1. Introduction to WordPress</h2>
+        <p class="muted">Zero-knowledge friendly: what WordPress is, differences between .org and .com, and main use-cases.</p>
+
+        <div class="callout"><strong>Definition:</strong> WordPress is an open-source content management system used to build websites without having to code every page.</div>
+
+        <h3>Why WordPress is #1 CMS</h3>
+        <ul>
+          <li>Ease of use, huge ecosystem, extensibility, low cost.</li>
+          <li>Large community and marketplace of plugins/themes.</li>
+        </ul>
+
+        <h3>Mermaid Diagram — high-level site components</h3>
+        <div class="mermaid">
+          flowchart LR
+            Visitor -->|requests| Server["Web Server"]
+            Server --> WP["WordPress Core"]
+            WP --> Theme["Theme (appearance)"]
+            WP --> Plugin["Plugins (features)"]
+            WP --> DB(("Database - MySQL/MariaDB"))
+            WP --> Media["Media Files"]
+        </div>
+
+        <h3>WordPress.org vs WordPress.com (in detail)</h3>
+        <div class="summary">
+          <strong>WordPress.org (self-hosted)</strong> — full control: choose host, install any plugin/theme, customize code. Requires maintenance (updates, backups, security).
+          <br><br>
+          <strong>WordPress.com (hosted)</strong> — simpler setup, limited plugin/theme choice on free plans, paid tiers add features; hosting and maintenance handled by provider.
+        </div>
+
+        <h3>Use cases</h3>
+        <ul>
+          <li>Blogging & publishing</li>
+          <li>Business websites & landing pages</li>
+          <li>Ecommerce (WooCommerce)</li>
+          <li>Portfolios, memberships, LMS</li>
+        </ul>
+
+        <div class="exercise">
+          <strong>Exercise 1.1</strong>: Write 3 sentences describing the site you want to build with WordPress.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> WordPress is flexible — pick .org for full control or .com for managed convenience.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Confusing .org and .com</li><li>Choosing theme before planning content</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 2 -->
+      <section id="sec2" class="card" tabindex="0" aria-labelledby="s2title">
+        <h2 id="s2title">2. Understanding the WordPress Ecosystem</h2>
+        <p class="muted">Explore core, themes, plugins and the community that supports WordPress.</p>
+
+        <h3>Open-source nature</h3>
+        <p>WordPress core is GPL-licensed. Anyone can read, contribute, and modify it.</p>
+
+        <h3>Mermaid Diagram — ecosystem map</h3>
+        <div class="mermaid">
+          graph TD
+            Core[WordPress Core] --> Themes(Themes)
+            Core --> Plugins(Plugins)
+            Core --> DB[(Database)]
+            Themes --> Child(Child Themes)
+            Plugins --> SEO[SEO Plugins]
+            Plugins --> Cache[Caching Plugins]
+            Community --> Core
+            Community --> Themes
+            Community --> Plugins
+        </div>
+
+        <h3>The role of community</h3>
+        <p>Contributors maintain core, themes, plugins, documentation, and run meetups & WordCamps.</p>
+
+        <div class="exercise">
+          <strong>Exercise 2.1</strong>: Visit WordPress.org repository and pick a theme; note last update & active installs.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> The ecosystem's modularity (core + themes + plugins) and community support are major strengths.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Using abandoned plugins/themes</li><li>Installing from untrusted sites</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 3 -->
+      <section id="sec3" class="card" tabindex="0" aria-labelledby="s3title">
+        <h2 id="s3title">3. WordPress Installation Methods</h2>
+        <p class="muted">Install locally for learning or use host one-click installers for production. Manual installs teach fundamentals.</p>
+
+        <h3>Localhost — XAMPP / MAMP / LocalWP</h3>
+        <div class="mermaid">
+          flowchart LR
+            A["Install XAMPP/MAMP/LocalWP"] --> B["Start Apache & MySQL"]
+            B --> C["Create Database"]
+            C --> D["Extract WordPress to htdocs or site folder"]
+            D --> E["Run installer at /wp-admin/install.php"]
+        </div>
+
+        <h3>One-click installs (cPanel/Softaculous / managed WP)</h3>
+        <div class="mermaid">
+          flowchart LR
+            Host --> Softaculous --> Install["Auto-install WordPress"]
+            Install --> DB["DB created"]
+            Install --> AdminAccount["Admin created"]
+            Install --> SSL["Let's Encrypt SSL (optional)"]
+        </div>
+
+        <h3>manual install with FTP + MySQL</h3>
+        <pre class="code">1) Create DB & user via cPanel/phpMyAdmin
+2) Upload WordPress files via FTP to public_html
+3) Visit domain and run installer; add DB credentials</pre>
+
+        <div class="exercise">
+          <strong>Exercise 3.1</strong>: Choose an install method and list the 5 steps you will follow to complete it.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Local = safe learning; one-click = fast production; manual = full control & learning.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Installing to live domain without testing</li><li>Using weak DB credentials</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 4 -->
+      <section id="sec4" class="card" tabindex="0" aria-labelledby="s4title">
+        <h2 id="s4title">4. Security During Installation</h2>
+
+        <h3>Strong usernames & passwords</h3>
+        <p>Use unique admin username and complex password. Use a password manager.</p>
+
+        <h3>Mermaid Diagram — security checklist flow</h3>
+        <div class="mermaid">
+          graph TD
+            Start[Start Install] --> UniqueUser{Choose admin username?}
+            UniqueUser -->|yes| StrongPW[Use strong password]
+            UniqueUser -->|no| Fail1[Change 'admin' -> set unique]
+            StrongPW --> Prefix{Change DB prefix from wp_?}
+            Prefix -->|yes| SSL[Enable SSL]
+            Prefix -->|no| Warn[Increase other protections]
+            SSL --> Finish[Complete install with secure defaults]
+        </div>
+
+        <h3>Default table prefix risks</h3>
+        <p>Change <code>wp_</code> to reduce automated exploit success rates.</p>
+
+        <div class="exercise">
+          <strong>Exercise 4.1</strong>: During install, set a non-default DB prefix and record it in your secure notes.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Early secure choices (username, password, prefix, SSL) greatly reduce risk.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Leaving file editing enabled in production</li><li>Using 'admin' as username</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 5 -->
+      <section id="sec5" class="card" tabindex="0" aria-labelledby="s5title">
+        <h2 id="s5title">5. First Login & Dashboard Tour</h2>
+
+        <h3>Admin panel overview</h3>
+        <div class="mermaid">
+          graph LR
+            Login --> Dashboard
+            Dashboard --> Posts
+            Dashboard --> Pages
+            Dashboard --> Media
+            Dashboard --> Appearance
+            Dashboard --> Plugins
+            Dashboard --> Users
+            Dashboard --> Settings
+        </div>
+
+        <h3>Posts vs Pages</h3>
+        <p>Posts — time-based, for blog/news. Pages — static content (About, Contact).</p>
+
+        <h3>Categories, tags, taxonomies</h3>
+        <p>Categories group posts (broad); tags are specific descriptors. Custom taxonomies can structure specialized content.</p>
+
+        <div class="exercise">
+          <strong>Exercise 5.1</strong>: Create a post and a page. Add a category and two tags to your post, then preview.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> The Dashboard organizes content—learn the menu and content types before customizing.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Publishing posts without previewing permalinks</li><li>Confusing tags and categories</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 6 -->
+      <section id="sec6" class="card" tabindex="0" aria-labelledby="s6title">
+        <h2 id="s6title">6. Media Management</h2>
+
+        <h3>Upload limits & formats</h3>
+        <p>Hosts set upload limits; common formats: JPG, PNG, GIF, SVG (beware), WebP (recommended).</p>
+
+        <h3>Mermaid — media workflow</h3>
+        <div class="mermaid">
+          graph TD
+            Upload[Upload Image] --> Optimize[Optimize / Resize]
+            Optimize --> WebP[Convert to WebP]
+            WebP --> WP[Add to Media Library]
+            WP --> Use[Insert into Post/Page]
+        </div>
+
+        <h3>Organizing Media Library</h3>
+        <p>Use meaningful file names & alt text. Consider a folder plugin if you need visual organization.</p>
+
+        <div class="exercise">
+          <strong>Exercise 6.1</strong>: Upload 3 images, add alt text, and convert at least one to WebP.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Optimized images = faster pages + better SEO. Use alt text for accessibility.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Uploading huge RAW photos</li><li>Missing alt text</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 7 -->
+      <section id="sec7" class="card" tabindex="0" aria-labelledby="s7title">
+        <h2 id="s7title">7. Menus & Navigation</h2>
+
+        <h3>Creating menus</h3>
+        <div class="mermaid">
+          graph LR
+            A[Appearance → Menus] --> B[Create Menu]
+            B --> C[Add Pages/Categories/Custom Links]
+            C --> D[Assign to Theme Location]
+            D --> E[Save & Test]
+        </div>
+
+        <h3>Hierarchies & custom links</h3>
+        <p>Create dropdowns by nesting items. Use custom links for external pages or deep anchors.</p>
+
+        <h3>Responsive navigation</h3>
+        <p>Check theme mobile behavior and test tap targets for usability.</p>
+
+        <div class="exercise">
+          <strong>Exercise 7.1</strong>: Create a main menu with Home, About, Blog, Contact; add a dropdown under Blog.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Well-structured menus improve navigation and SEO.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Overcrowded main navigation</li><li>Unassigned menus so they don't show</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 8 -->
+      <section id="sec8" class="card" tabindex="0" aria-labelledby="s8title">
+        <h2 id="s8title">8. Widgets & Gutenberg Blocks</h2>
+
+        <h3>Classic widgets vs block editor</h3>
+        <div class="mermaid">
+          graph LR
+            Classic[Widgets] --> Sidebar[Sidebars & Footers]
+            Gutenberg[Blocks] --> Posts[Content Layout]
+            Gutenberg --> Reusable[Reusable Blocks]
+        </div>
+
+        <h3>Using blocks for layout</h3>
+        <p>Blocks include columns, groups, hero sections. Combine them to form page layouts without page builders.</p>
+
+        <div class="exercise">
+          <strong>Exercise 8.1</strong>: Create a page using a hero block, 3-column features, and save a CTA as a reusable block.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Blocks give flexible content control — master grouping and reusable blocks.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Relying on too many third-party block plugins</li><li>Not using reusable blocks for repeat content</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 9 -->
+      <section id="sec9" class="card" tabindex="0" aria-labelledby="s9title">
+        <h2 id="s9title">9. User Roles & Permissions</h2>
+
+        <h3>Default roles explained</h3>
+        <div class="mermaid">
+          graph TB
+            Admin[Administrator] -->|Full| Editor[Editor]
+            Editor -->|Publish| Author[Author]
+            Author -->|Write| Contributor[Contributor]
+            Contributor -->|Suggest| Subscriber[Subscriber]
+        </div>
+
+        <h3>Real-world role mapping</h3>
+        <p>Small business: owner (Admin), marketer (Editor), writer (Author). Magazine: many Editors & Authors; Contributors for freelancers.</p>
+
+        <div class="exercise">
+          <strong>Exercise 9.1</strong>: Create a user for each role and note capabilities.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Use roles to restrict privileges; plugins allow finer control when needed.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Granting admin rights unnecessarily</li><li>Sharing passwords instead of creating users</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 10 -->
+      <section id="sec10" class="card" tabindex="0" aria-labelledby="s10title">
+        <h2 id="s10title">10. Themes: Basics</h2>
+
+        <h3>Finding free themes</h3>
+        <p>Appearance → Themes → Add New. Filter by features and test demo and responsiveness.</p>
+
+        <div class="mermaid">
+          graph LR
+            Repository --> Install[Install Theme]
+            Install --> Activate[Activate Theme]
+            Activate --> Customize[Appearance → Customize]
+            Activate --> DemoImport[Optional Demo Import]
+        </div>
+
+        <h3>Install / activate / delete</h3>
+        <p>Keep only active and one backup theme installed; delete unused ones for security.</p>
+
+        <div class="exercise">
+          <strong>Exercise 10.1</strong>: Install a free theme and list customization options available.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Choose updated, well-supported themes and test responsive behavior.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Installing many themes (clutter)</li><li>Editing parent theme files directly</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 11 -->
+      <section id="sec11" class="card" tabindex="0" aria-labelledby="s11title">
+        <h2 id="s11title">11. Themes: Advanced</h2>
+
+        <h3>Premium themes overview</h3>
+        <p>Premium themes offer extra features, templates, and support. Evaluate demos, speed, and support policy.</p>
+
+        <h3>Child theme creation (step-by-step)</h3>
+        <div class="mermaid">
+          sequenceDiagram
+            participant Dev as Developer
+            Dev->>FS: Create folder wp-content/themes/child-theme
+            Dev->>FS: Add style.css and functions.php
+            Dev->>WP: Activate child theme
+            WP->>Site: Use child styles & overrides
+        </div>
+
+        <pre class="code">/* style.css
+Theme Name: My Child Theme
+Template: parent-theme-folder
+*/
+<?php
+// functions.php: enqueue parent style
+add_action('wp_enqueue_scripts','child_enqueue');
+function child_enqueue(){ wp_enqueue_style('parent-style', get_template_directory_uri().'/style.css'); }
+?></pre>
+
+        <h3>Customizing via Theme Customizer</h3>
+        <p>Use Appearance → Customize to change colors, header, widgets, and preview before publishing.</p>
+
+        <div class="exercise">
+          <strong>Exercise 11.1</strong>: Create a child theme and change the H1 color via child CSS.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Use child themes to preserve customizations and prefer quality themes.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Editing parent theme directly</li><li>Using poorly coded themes</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 12 -->
+      <section id="sec12" class="card" tabindex="0" aria-labelledby="s12title">
+        <h2 id="s12title">12. Plugins: Basics</h2>
+
+        <h3>What plugins do</h3>
+        <p>Plugins extend WordPress with new features — SEO, forms, security, ecommerce, and more.</p>
+
+        <div class="mermaid">
+          graph LR
+            WP --> Plugins[Plugins Folder]
+            Plugins --> SEO[SEO]
+            Plugins --> Forms[Forms]
+            Plugins --> Security[Security]
+            Plugins --> Cache[Caching]
+        </div>
+
+        <h3>Installing & managing safely</h3>
+        <ol>
+          <li>Check reviews, installs, last updated.</li>
+          <li>Test on staging if possible.</li>
+          <li>Remove unused plugins; restrict plugin installs to admins.</li>
+        </ol>
+
+        <div class="exercise">
+          <strong>Exercise 12.1</strong>: Install WPForms Lite or Contact Form 7; create and embed a contact form.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Plugins are powerful — vet them and limit duplicates.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Installing many overlapping plugins</li><li>Not keeping plugins updated</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 13 -->
+      <section id="sec13" class="card" tabindex="0" aria-labelledby="s13title">
+        <h2 id="s13title">13. Plugins: Must-Have Set</h2>
+
+        <h3>Recommended categories</h3>
+        <div class="mermaid">
+          graph TB
+            SEO --> RankMath[RankMath / Yoast]
+            Security --> Wordfence[Wordfence / Sucuri]
+            Backup --> Updraft[UpdraftPlus]
+            Cache --> W3[W3 Total Cache / LiteSpeed]
+            Forms --> WPForms[WPForms Lite]
+        </div>
+
+        <h3>Why these?</h3>
+        <ul>
+          <li>SEO: metadata, sitemaps, schema</li>
+          <li>Security: firewall & scanning</li>
+          <li>Backup: scheduled off-site copies</li>
+          <li>Caching: faster pages</li>
+          <li>Forms: lead capture</li>
+        </ul>
+
+        <div class="exercise">
+          <strong>Exercise 13.1</strong>: Install one plugin from each category and configure basic settings.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Cover SEO, security, backups, cache, and forms early for a stable site foundation.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Using multiple SEO plugins at once</li><li>Relying exclusively on plugins for backup without testing</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 14 -->
+      <section id="sec14" class="card" tabindex="0" aria-labelledby="s14title">
+        <h2 id="s14title">14. Site Security Best Practices</h2>
+
+        <h3>Multi-layer security</h3>
+        <div class="mermaid">
+          graph LR
+            SSL --> HTTPS[Force HTTPS]
+            2FA --> Login[Enable 2FA]
+            Limit --> LoginLock[Limit Login Attempts]
+            Update --> Core[Auto minor updates]
+            Backup --> Restore[Test restores]
+        </div>
+
+        <h3>Regular updates</h3>
+        <p>Enable auto-updates for minor releases; test major updates on staging first.</p>
+
+        <div class="exercise">
+          <strong>Exercise 14.1</strong>: Enable 2FA for admin and configure login attempt limit.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Combine SSL, 2FA, login limits, and updates for strong security posture.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Not documenting recovery options</li><li>Thinking security plugin alone solves all threats</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 15 -->
+      <section id="sec15" class="card" tabindex="0" aria-labelledby="s15title">
+        <h2 id="s15title">15. Backups & Restore Plans</h2>
+
+        <h3>Backup strategy</h3>
+        <div class="mermaid">
+          graph LR
+            Site --> BackupPlugin[Backup Plugin]
+            BackupPlugin --> Cloud[Cloud Storage: GDrive/Dropbox/S3]
+            Cloud --> Copies[Multiple Copies / Retention]
+            Copies --> Restore[Test Restore on Staging]
+        </div>
+
+        <h3>Test restores</h3>
+        <p>Periodically restore backups to local/staging to verify integrity and recovery time objectives.</p>
+
+        <div class="exercise">
+          <strong>Exercise 15.1</strong>: Configure UpdraftPlus to back up to Google Drive and perform a test restore on a local copy.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Backups must be automated, stored off-site, and tested regularly.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Relying only on host backups without checking retention</li><li>Not storing backups off-site</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 16 -->
+      <section id="sec16" class="card" tabindex="0" aria-labelledby="s16title">
+        <h2 id="s16title">16. Performance & Optimization</h2>
+
+        <h3>Core Web Vitals basics</h3>
+        <div class="mermaid">
+          graph LR
+            Page --> LCP[Largest Contentful Paint]
+            Page --> FID[First Input Delay / INP]
+            Page --> CLS[Cumulative Layout Shift]
+            Optimize --> Images
+            Optimize --> Cache
+            Optimize --> DB
+        </div>
+
+        <h3>Image compression & WebP</h3>
+        <p>Compress and serve WebP where supported. Use responsive images (srcset) for different screens.</p>
+
+        <div class="exercise">
+          <strong>Exercise 16.1</strong>: Run Lighthouse, note LCP & CLS, install an image optimizer and compare scores.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Use caching, compress images, and clean database to improve performance.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Turning on minification without testing</li><li>Overloading with heavy plugins</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 17 -->
+      <section id="sec17" class="card" tabindex="0" aria-labelledby="s17title">
+        <h2 id="s17title">17. Hands-On Practical Exercises</h2>
+
+        <h3>Step-by-step practical tasks</h3>
+        <div class="mermaid">
+          flowchart TB
+            Start["Start Project"] --> Install["Install WordPress (Local)"]
+            Install --> Post["Publish First Post"]
+            Post --> Categories["Create Categories & Tags"]
+            Categories --> Plugins["Install SEO/Security/Backup"]
+            Plugins --> Theme["Install & Customize Theme"]
+            Theme --> Menus["Create & Assign Menus"]
+            Menus --> Done["Site Ready (basic)"]
+        </div>
+
+        <h3>Project</h3>
+        <p>Build a small 4–6 page site with Home, Blog, Services, Contact, About. Publish 3 posts and configure essential plugins.</p>
+
+        <div class="exercise">
+          <strong>Exercise 17.1 (Project)</strong>: Complete the project checklist and document configuration choices.
+        </div>
+
+        <div class="summary">
+          <strong>Summary:</strong> Repeat practical tasks until confident. Keep a change log of plugin/theme changes.
+        </div>
+
+        <div class="mistake">
+          <strong>Beginner Mistakes to Avoid</strong>
+          <ul><li>Adding many plugins during the first build</li><li>Not testing backups & restores</li></ul>
+        </div>
+      </section>
+
+      <!-- SECTION 18 -->
+      <section id="sec18" class="card" tabindex="0" aria-labelledby="s18title">
+        <h2 id="s18title">18. Beginner Checklist & Next Steps</h2>
+
+        <h3>Checklist</h3>
+        <ul class="checklist">
+          <li>Enable SSL & force HTTPS</li>
+          <li>Set permalinks to "Post name"</li>
+          <li>Install SEO plugin and submit sitemap</li>
+          <li>Backup configured & tested</li>
+          <li>2FA enabled for admin</li>
+          <li>Favicon uploaded</li>
+          <li>Mobile responsiveness tested</li>
+        </ul>
+
+        <h3>Mermaid — roadmap to next modules</h3>
+        <div class="mermaid">
+          graph LR
+            Module4 --> Module6[Module 6: SEO]
+            Module4 --> Module8[Module 8: Content Strategy]
+            Module6 --> DeepSEO[Advanced SEO techniques]
+            Module8 --> Editorial[Editorial Calendar & Workflow]
+        </div>
+
+        <h3>Practice projects</h3>
+        <ol>
+          <li>Blog with categories & tags</li>
+          <li>Small business site with contact form & lead capture</li>
+          <li>Portfolio with gallery</li>
+          <li>Mini WooCommerce store</li>
+        </ol>
+
+        <div class="summary">
+          <strong>Summary:</strong> Use the checklist consistently; progress to SEO and content strategy modules for optimization and traffic growth.
+        </div>
+      </section>
+
+      <!-- All Exercises & Quizzes -->
+      <section id="exercises" class="card" tabindex="0" aria-labelledby="exTitle">
+        <h2 id="exTitle">All Exercises & Hints</h2>
+        <p class="muted">Hints and sample answers for earlier exercises.</p>
+
+        <h3>Sample for Exercise 1.1</h3>
+        <pre class="code">I will build a portfolio + blog for my civil engineering consultancy. The site will showcase projects, offer downloadable PDFs, and have a contact form for client inquiries.</pre>
+
+        <h3>Hints</h3>
+        <ul>
+          <li>Record DB names & install paths when installing locally.</li>
+          <li>Use meaningful category names for organization.</li>
+          <li>Keep plugin settings documented and minimal on first pass.</li>
+        </ul>
+      </section>
+
+      <section id="quizzes" class="card" tabindex="0" aria-labelledby="qTitle">
+        <h2 id="qTitle">All Quizzes</h2>
+        <p class="muted">Interactive checks for comprehension — answers give immediate feedback.</p>
+
+        <div>
+          <strong>Quiz 1</strong>
+          <p>Which is true?</p>
+          <label><input type="radio" name="q1" value="a"> WordPress.com allows unlimited plugins on free plan</label><br>
+          <label><input type="radio" name="q1" value="b"> WordPress.org requires arranging hosting</label><br>
+          <label><input type="radio" name="q1" value="c"> WordPress cannot run ecommerce</label><br>
+          <button onclick="checkQuiz('q1','b')">Check</button>
+          <div id="result-q1" class="result" aria-live="polite"></div>
+        </div>
+
+        <div style="margin-top:10px">
+          <strong>Quiz 2</strong>
+          <p>Which controls appearance?</p>
+          <label><input type="radio" name="q2" value="a"> Plugin</label><br>
+          <label><input type="radio" name="q2" value="b"> Theme</label><br>
+          <label><input type="radio" name="q2" value="c"> Database</label><br>
+          <button onclick="checkQuiz('q2','b')">Check</button>
+          <div id="result-q2" class="result"></div>
+        </div>
+
+      </section>
+
+      <footer style="text-align:center;margin:20px 0;color:var(--muted)">
+        <small>Module 4 — WordPress Practical • Mermaid diagrams via CDN • Created for learners</small>
+      </footer>
+
+    </main>
+  </div>
+</div>
+
+<!-- INTERACTIVE SCRIPT (no external besides mermaid CDN) -->
+<script>
+  // Mobile sidebar toggle
+  const sidebar = document.getElementById('sidebar');
+  const openBtn = document.getElementById('openSidebar');
+  openBtn?.addEventListener('click', ()=> sidebar.classList.toggle('open'));
+  document.addEventListener('click', (e)=> {
+    if(window.innerWidth <= 980){
+      if(!sidebar.contains(e.target) && !openBtn.contains(e.target)) sidebar.classList.remove('open');
+    }
+  });
+
+  // Active nav highlight on scroll
+  const navLinks = Array.from(document.querySelectorAll('.nav a'));
+  const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  window.addEventListener('scroll', ()=>{
+    let fromTop = window.scrollY + 140;
+    let current = sections.find(sec => sec.offsetTop <= fromTop && (sec.offsetTop + sec.offsetHeight) > fromTop);
+    navLinks.forEach(link => link.style.background = 'transparent');
+    if(current){
+      const active = navLinks.find(l => l.getAttribute('href') === '#' + current.id);
+      if(active) active.style.background = 'linear-gradient(90deg, rgba(43,108,176,0.06), rgba(58,160,214,0.03))';
+    }
+  });
+
+  // Simple quiz check
+  function checkQuiz(qid, correct){
+    const radios = document.getElementsByName(qid);
+    let chosen = null;
+    for(const r of radios) if(r.checked) chosen = r.value;
+    const res = document.getElementById('result-' + qid);
+    if(!chosen){ res.textContent = 'Please select an answer.'; res.style.color = '#92400e'; return; }
+    if(chosen === correct){ res.textContent = '✅ Correct!'; res.style.color = '#065f46'; }
+    else { res.textContent = '❌ Incorrect — try again.'; res.style.color = '#7f1d1d'; }
+  }
+
+  // Anchor icon addition for headings
+  document.querySelectorAll('main h2').forEach(h=>{
+    const a = document.createElement('a');
+    a.textContent = ' 🔗';
+    a.href = '#' + h.parentElement.id;
+    a.style.fontSize = '14px'; a.style.textDecoration = 'none';
+    h.appendChild(a);
+  });
+
+  // Accessibility: close with Esc
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') sidebar.classList.remove('open'); });
+
+  // Auto-initialize mermaid for dynamically added diagrams if needed
+  if(window.mermaid && mermaid.init){
+    // mermaid already initialized via startOnLoad
+  }
+</script>
+</body>
+</html>
